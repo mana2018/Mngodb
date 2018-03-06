@@ -1,0 +1,84 @@
+3.List databases
+mongo   
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+4New databases
+> use employee
+switched to db employee
+
+5 Crud operations
+> db.employee.insert({name:'Mana', age:30, post:'Trainee', year:2018});
+WriteResult({ "nInserted" : 1 })
+
+> db.employee.find({year:2018},{name:1,post:1,_id:0});
+{ "name" : "Mana", "post" : "Trainee" }
+
+> db.employee.update({name:'Mana'},{$set:{year:2017}},{multi:true});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.employee.remove({name:'Mana'});
+WriteResult({ "nRemoved" : 1 })
+
+6 Bonus operations
+> db.employee.findOne({});
+{
+	"_id" : ObjectId("5a9ed32dc44214c5d3971b18"),
+	"name" : "Manu",
+	"age" : 50,
+	"post" : "Tester",
+	"year" : 2017
+}
+
+db.employee.insertMany([{name:'Mona', age:70, post:'Trainee', year:2016},{name:'Manas', age:33, post:'Trainee', year:2011},{name:'Mani', age:80, post:'Trainee', year:2009},{name:'Manali', age:10, post:'Trainee', year:2000},{name:'Manee', age:60, post:'Trainee', year:2008},{name:'eeana', age:36, post:'Trainee', year:2005}]);
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("5a9edd0992a3b953882eb168"),
+		ObjectId("5a9edd0992a3b953882eb169"),
+		ObjectId("5a9edd0992a3b953882eb16a"),
+		ObjectId("5a9edd0992a3b953882eb16b"),
+		ObjectId("5a9edd0992a3b953882eb16c"),
+		ObjectId("5a9edd0992a3b953882eb16d")
+	]
+}
+
+> db.employee.updateMany({age:70},{$set:{age:100}});
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+
+> db.employee.deleteMany({name:'Aana'});
+{ "acknowledged" : true, "deletedCount" : 3 }
+
+7.Cursor operations
+ db.employee.find({}).sort({age:-1});
+{ "_id" : ObjectId("5a9ed83ea134ce72b05a71d3"), "name" : "Aana", "age" : 70, "post" : "Trainee", "year" : 2008 }
+{ "_id" : ObjectId("5a9ed32dc44214c5d3971b18"), "name" : "Manu", "age" : 50, "post" : "Tester", "year" : 2017 }
+{ "_id" : ObjectId("5a9ed86fa134ce72b05a71d4"), "name" : "Mahi", "age" : 40, "post" : "Trainee", "year" : 2010 }
+
+ db.employee.find({}).count();
+
+
+db.employee.find({}).limit(3);
+{ "_id" : ObjectId("5a9ed32dc44214c5d3971b18"), "name" : "Manu", "age" : 50, "post" : "Tester", "year" : 2017 }
+{ "_id" : ObjectId("5a9ed86fa134ce72b05a71d4"), "name" : "Mahi", "age" : 40, "post" : "Trainee", "year" : 2010 }
+{ "_id" : ObjectId("5a9edd0992a3b953882eb168"), "name" : "Mona", "age" : 100, "post" : "Trainee", "year" : 2016 }
+
+
+db.employee.find({}).skip(6);
+{ "_id" : ObjectId("5a9edd0992a3b953882eb16c"), "name" : "Manee", "age" : 60, "post" : "Trainee", "year" : 2008 }
+{ "_id" : ObjectId("5a9edd0992a3b953882eb16d"), "name" : "eeana", "age" : 36, "post" : "Trainee", "year" : 2005 }
+
+db.employee.find({post:'Trainee'},{name:1,year:1,_id:0}).sort({year:-1}).skip(1).limit(2);
+{ "name" : "Manas", "year" : 2011 }
+{ "name" : "Mahi", "year" : 2010 }
+
+db.employee.find({post:'Trainee'},{name:1,year:1,_id:0}).sort({year:-1}).limit(2).skip(1);
+{ "name" : "Manas", "year" : 2011 }
+{ "name" : "Mahi", "year" : 2010 }
+
+db.employee.find({post:'Trainee'},{name:1,year:1,_id:0}).sort({year:-1}).limit(1).skip(2);
+{ "name" : "Mahi", "year" : 2010 }
+
+
