@@ -58,6 +58,7 @@ db.employee.insertMany([{name:'Mona', age:70, post:'Trainee', year:2016},{name:'
 { "_id" : ObjectId("5a9ed86fa134ce72b05a71d4"), "name" : "Mahi", "age" : 40, "post" : "Trainee", "year" : 2010 }
 
  db.employee.find({}).count();
+8
 
 
 db.employee.find({}).limit(3);
